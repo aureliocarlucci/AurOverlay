@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+  <maintainer type="person">
+    <email>carlucci@maths.ox.ac.uk</email>
+    <name>Aurelio Carlucci</name>
+  </maintainer>
+  <use>
+    <flag name="optimization">Disable to build with -O0 for debugging.</flag>
+  </use>
+</pkgmetadata>
