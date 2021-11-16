@@ -1,4 +1,4 @@
-# Macaulay2 live Ebuils.
+# Macaulay2 live Ebuild.
 
 This Ebuild is meant as a wrapper around the standard Macaulay2 installation [instructions](https://github.com/Macaulay2/M2/blob/master/M2/INSTALL). Currently, it is not suitable for inclusion in the main Portage tree: Macaulay2 bundles quite a number of accessory software, which should be disentangled from the main build and packaged separately.
 
