@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<repositories version="1.0">
+  <repo quality="experimental" status="unofficial">
+    <name>auroverlay</name>
+      <description lang="en">Aurelio's Custom Gentoo Overlay.</description>
+        <homepage>https://github.com/aureliocarlucci/AurOverlay</homepage>
+        <owner type="person">
+            <name>Aurelio Carlucci</name>
+            <email>carlucci@maths.ox.ac.uk</email>
+        </owner>
+        <source type="git">git://github.com/aureliocarlucci/AurOverlay.git</source>
+        <feed>https://github.com/aureliocarlucci/AurOverlay/commits/master</feed>
+  </repo>
+</repositories>
