@@ -7,7 +7,7 @@ PYTHON_COMPAT=( python3_8 )
 
 inherit autotools elisp-common flag-o-matic git-r3 python-single-r1 toolchain-funcs
 
-FACTORY="factory-4.0.0+m4"
+FACTORY="factory-4.2.1"
 FACTORY_GFTABLES="factory.4.0.1-gftables"
 
 DESCRIPTION="Research tool for commutative algebra and algebraic geometry"
@@ -30,32 +30,47 @@ DEPEND="${PYTHON_DEPS}
 	sys-process/time
 	virtual/pkgconfig
 	app-arch/unzip
-	app-text/dos2unix"
+	app-text/dos2unix
+	dev-lang/yasm"
 # Unzip and dos2unix just for normaliz
 
+
+#Dependencies taken from the official guide
+# https://github.com/Macaulay2/M2/blob/master/M2/INSTALL
+
+
 RDEPEND="${PYTHON_DEPS}
-	sys-libs/gdbm
-	dev-libs/ntl
-	sci-mathematics/pari[gmp]
-	>=sys-libs/readline-6.1
-	dev-libs/libxml2:2
-	sci-mathematics/flint
-	sci-mathematics/frobby
 	sci-mathematics/4ti2
-	sci-mathematics/nauty
-	>=sci-mathematics/normaliz-2.8
-	sci-mathematics/gfan
-	sci-libs/mpir[cxx]
-	dev-libs/mpfr
-	sci-libs/cdd+
-	sci-libs/cddlib
-	sci-libs/lrslib[gmp]
 	virtual/blas
 	virtual/lapack
+	dev-libs/boehm-gc
+	dev-libs/boost
+	sci-libs/cddlib
+	sci-libs/coinor-csdp
+	sci-mathematics/flint
+	sci-libs/fplll
+	sci-mathematics/frobby
+	sys-libs/gdbm
+	sci-mathematics/gfan
+	sci-mathematics/glpk
+	dev-libs/gmp
+	dev-cpp/gtest
+	dev-libs/libatomic_ops
+	sci-libs/lrslib[gmp]
+	dev-libs/mpc
+	dev-libs/mpfr
+	sci-mathematics/nauty
+	sci-mathematics/normaliz
+	dev-libs/ntl
+	sci-mathematics/topcom
+	sci-mathematics/pari[gmp]
+	sys-libs/readline
+	dev-libs/libxml2
+	sci-libs/mpir[cxx]
+	sci-libs/cdd+
 	dev-util/ctags
 	sys-libs/ncurses
-	>=dev-libs/boehm-gc-7.2_alpha6[threads]
-	dev-libs/libatomic_ops
+	dev-cpp/tbb
 	emacs? ( app-editors/emacs )"
 
 SITEFILE=70Macaulay2-gentoo.el
@@ -89,10 +104,10 @@ src_prepare() {
 
 	# Patching .m2 files to look for external programs in
 	# /usr/bin
-	eapply "${FILESDIR}"/${PV}-paths-of-external-programs.patch
+	#eapply "${FILESDIR}"/${PV}-paths-of-external-programs.patch
 
 	# Shortcircuit lapack tests
-	eapply "${FILESDIR}"/${PV}-lapack.patch
+	#eapply "${FILESDIR}"/${PV}-lapack.patch
 
 	eapply_user
 
@@ -128,6 +143,7 @@ src_configure (){
 				$(use_enable debug) \
 				--enable-build-libraries="factory" \
 				--with-unbuilt-programs="4ti2 gfan normaliz nauty cddplus lrslib" \
+				--enable-download \
 		|| die "failed to configure Macaulay"
 }
 
