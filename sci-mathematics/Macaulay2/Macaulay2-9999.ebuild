@@ -7,16 +7,24 @@ PYTHON_COMPAT=( python3_8 )
 
 inherit autotools elisp-common flag-o-matic git-r3 python-single-r1 toolchain-funcs
 
+# The packages below are not provided by other Gentoo ebuilds
 FACTORY="factory-4.2.1"
 FACTORY_GFTABLES="factory.4.0.1-gftables"
+COHOMCALG="cohomCalg-0.32"
+GTEST="gtest-1.10.0"
+MPSOLVE="mpsolve-3.2.1"
 
 DESCRIPTION="Research tool for commutative algebra and algebraic geometry"
 HOMEPAGE="https://faculty.math.illinois.edu/Macaulay2"
 BASE_URI="https://faculty.math.illinois.edu/Macaulay2/Downloads/OtherSourceCode/"
+
 SRC_URI="
 	${BASE_URI}/${FACTORY}.tar.gz
 	${BASE_URI}/${FACTORY_GFTABLES}.tar.gz
-	${BASE_URI}/gtest-1.7.0.tar.gz"
+	${BASE_URI}/${COHOMCALG}.tar.gz
+	${BASE_URI}/${GTEST}.tar.gz
+	${BASE_URI}/${MPSOLVE}.tar.gz"
+
 EGIT_REPO_URI="git://github.com/Macaulay2/M2.git"
 
 SLOT="0"
@@ -27,11 +35,14 @@ IUSE="debug emacs +optimization"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="${PYTHON_DEPS}
+	sys-devel/gcc:10
 	sys-process/time
 	virtual/pkgconfig
 	app-arch/unzip
 	app-text/dos2unix
-	dev-lang/yasm"
+	dev-lang/yasm
+	dev-libs/boehm-gc[cxx]
+	dev-libs/boost"
 # Unzip and dos2unix just for normaliz
 
 
@@ -43,8 +54,6 @@ RDEPEND="${PYTHON_DEPS}
 	sci-mathematics/4ti2
 	virtual/blas
 	virtual/lapack
-	dev-libs/boehm-gc
-	dev-libs/boost
 	sci-libs/cddlib
 	sci-libs/coinor-csdp
 	sci-mathematics/flint
@@ -64,6 +73,7 @@ RDEPEND="${PYTHON_DEPS}
 	dev-libs/ntl
 	sci-mathematics/topcom
 	sci-mathematics/pari[gmp]
+	sci-mathematics/singular
 	sys-libs/readline
 	dev-libs/libxml2
 	sci-libs/mpir[cxx]
@@ -75,7 +85,8 @@ RDEPEND="${PYTHON_DEPS}
 
 SITEFILE=70Macaulay2-gentoo.el
 
-S="${WORKDIR}/${PN}-${PV}/"
+S="${WORKDIR}/${PN}-${PV}/M2"
+SM2="${WORKDIR}/${PN}-${PV}/M2/"
 
 RESTRICT="mirror"
 
@@ -84,9 +95,16 @@ src_unpack (){
 	git-r3_src_unpack
 	# Undo one level of directory until git allows to checkout
 	# subdirectories
-	mv "${S}"/M2/* "${S}" || die
+
+#	 mv "${S}"/M2/* "${S}" || die
+
 	# Need to get rid of this now because install wants this location later
-	rm -r "${S}/M2" || die
+#	 rm -r "${S}/M2" || die
+
+	# Create a link to make all still work
+
+#	 ln -s "${S}"  "${S}"/M2 || die
+
 }
 
 pkg_setup () {
@@ -113,14 +131,24 @@ src_prepare() {
 
 	# Factory is a statically linked library which (in this flavor) are not used by any
 	# other program. We build it internally and don't install it.
+
 	cp "${DISTDIR}/${FACTORY}.tar.gz" "${S}/BUILD/tarfiles/" \
 		|| die "copy failed"
 	cp "${DISTDIR}/${FACTORY_GFTABLES}.tar.gz" "${S}/BUILD/tarfiles/" \
 		|| die "copy failed"
+
 	# Macaulay2 developers want that gtest is built internally because
 	# the documentation says it may fail if build with options not the
 	# same as the tested program.
-	cp "${DISTDIR}/gtest-1.7.0.tar.gz" "${S}/BUILD/tarfiles/" \
+	cp "${DISTDIR}/${GTEST}.tar.gz" "${S}/BUILD/tarfiles/" \
+		|| die "copy failed"
+
+
+	cp "${DISTDIR}/${MPSOLVE}.tar.gz" "${S}/BUILD/tarfiles/" \
+		|| die "copy failed"
+
+
+	cp "${DISTDIR}/${COHOMCALG}.tar.gz" "${S}/BUILD/tarfiles/" \
 		|| die "copy failed"
 
 	eautoreconf
@@ -129,9 +157,10 @@ src_prepare() {
 src_configure (){
 	# Recommended in bug #268064 Possibly unecessary
 	# but should not hurt anybody.
-	if ! use emacs; then
-		tags="ctags"
-	fi
+
+	#if ! use emacs; then
+	#	tags="ctags"
+	#fi
 
 	# configure instead of econf to enable install with --prefix
 	./configure LIBS="$($(tc-getPKG_CONFIG) --libs lapack)" \
@@ -143,8 +172,7 @@ src_configure (){
 				$(use_enable debug) \
 				--enable-build-libraries="factory" \
 				--with-unbuilt-programs="4ti2 gfan normaliz nauty cddplus lrslib" \
-				--enable-download \
-		|| die "failed to configure Macaulay"
+				|| die "failed to configure Macaulay"
 }
 
 src_compile() {
@@ -170,14 +198,18 @@ src_install () {
 	# NumericalAlgebraicGeometry fails (during install too?)
 	emake IgnoreExampleErrors=true -j1 install
 
+
+	# It seems the default location is fine.
+
 	# Remove emacs files and install them in the
 	# correct place if use emacs
-	rm -rf "${ED}"/usr/share/emacs/site-lisp || die
-	if use emacs; then
-		cd "${S}/Macaulay2/emacs" || die
-		elisp-install ${PN} *.elc *.el
-		elisp-site-file-install "${FILESDIR}/${SITEFILE}"
-	fi
+
+	# rm -rf "${ED}"/usr/share/emacs/site-lisp || die
+	# if use emacs; then
+	# 	cd "${S}/Macaulay2/emacs" || die
+	# 	elisp-install ${PN} *.elc *.el
+	# 	elisp-site-file-install "${FILESDIR}/${SITEFILE}"
+	# fi
 }
 
 pkg_postinst() {
