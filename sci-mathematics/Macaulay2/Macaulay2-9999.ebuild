@@ -8,9 +8,9 @@ PYTHON_COMPAT=( python3_8 )
 inherit autotools elisp-common flag-o-matic git-r3 python-single-r1 toolchain-funcs
 
 # The packages below are not provided by other Gentoo ebuilds
+COHOMCALG="cohomCalg-0.32"
 FACTORY="factory-4.2.1"
 FACTORY_GFTABLES="factory.4.0.1-gftables"
-COHOMCALG="cohomCalg-0.32"
 GTEST="gtest-1.10.0"
 MPSOLVE="mpsolve-3.2.1"
 
@@ -19,9 +19,9 @@ HOMEPAGE="https://faculty.math.illinois.edu/Macaulay2"
 BASE_URI="https://faculty.math.illinois.edu/Macaulay2/Downloads/OtherSourceCode/"
 
 SRC_URI="
-	${BASE_URI}/${FACTORY}.tar.gz
-	${BASE_URI}/${FACTORY_GFTABLES}.tar.gz
 	${BASE_URI}/${COHOMCALG}.tar.gz
+	${BASE_URI}/${FACTORY_GFTABLES}.tar.gz
+	${BASE_URI}/${FACTORY}.tar.gz
 	${BASE_URI}/${GTEST}.tar.gz
 	${BASE_URI}/${MPSOLVE}.tar.gz"
 
@@ -35,14 +35,14 @@ IUSE="debug emacs +optimization"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="${PYTHON_DEPS}
-	sys-devel/gcc
-	sys-process/time
-	virtual/pkgconfig
 	app-arch/unzip
 	app-text/dos2unix
 	dev-lang/yasm
 	dev-libs/boehm-gc[cxx]
-	dev-libs/boost"
+	dev-libs/boost
+	sys-devel/gcc
+	sys-process/time
+	virtual/pkgconfig"
 # Unzip and dos2unix just for normaliz
 
 
@@ -51,36 +51,36 @@ DEPEND="${PYTHON_DEPS}
 
 
 RDEPEND="${PYTHON_DEPS}
-	sci-mathematics/4ti2
-	virtual/blas
-	virtual/lapack
-	sci-libs/cddlib
-	sci-libs/coinor-csdp
-	sci-mathematics/flint
-	sci-libs/fplll
-	sci-mathematics/frobby
-	sys-libs/gdbm
-	sci-mathematics/gfan
-	sci-mathematics/glpk
-	dev-libs/gmp
 	dev-cpp/gtest
+	dev-cpp/tbbx
+	dev-libs/gmp
 	dev-libs/libatomic_ops
-	sci-libs/lrslib[gmp]
+	dev-libs/libxml2
 	dev-libs/mpc
 	dev-libs/mpfr
+	dev-libs/ntl
+	dev-util/ctags
+	sci-libs/cdd+
+	sci-libs/cddlib
+	sci-libs/coinor-csdp
+	sci-libs/fplll
+	sci-libs/lrslib[gmp]
+	sci-libs/mpir[cxx]
+	sci-mathematics/4ti2
+	sci-mathematics/flint
+	sci-mathematics/frobby
+	sci-mathematics/gfan
+	sci-mathematics/glpk
 	sci-mathematics/nauty
 	sci-mathematics/normaliz
-	dev-libs/ntl
-	sci-mathematics/topcom
 	sci-mathematics/pari[gmp]
 	sci-mathematics/singular
-	sys-libs/readline
-	dev-libs/libxml2
-	sci-libs/mpir[cxx]
-	sci-libs/cdd+
-	dev-util/ctags
+	sci-mathematics/topcom
+	sys-libs/gdbm
 	sys-libs/ncurses
-	dev-cpp/tbb
+	sys-libs/readline
+	virtual/blas
+	virtual/lapack
 	emacs? ( app-editors/emacs )"
 
 #SITEFILE=70Macaulay2-gentoo.el
