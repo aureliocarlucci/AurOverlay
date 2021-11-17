@@ -35,7 +35,7 @@ IUSE="debug emacs +optimization"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="${PYTHON_DEPS}
-	sys-devel/gcc:10
+	sys-devel/gcc
 	sys-process/time
 	virtual/pkgconfig
 	app-arch/unzip
@@ -83,7 +83,7 @@ RDEPEND="${PYTHON_DEPS}
 	dev-cpp/tbb
 	emacs? ( app-editors/emacs )"
 
-SITEFILE=70Macaulay2-gentoo.el
+#SITEFILE=70Macaulay2-gentoo.el
 
 S="${WORKDIR}/${PN}-${PV}/M2"
 SM2="${WORKDIR}/${PN}-${PV}/M2/"
@@ -182,7 +182,7 @@ src_compile() {
 	emake IgnoreExampleErrors=true -j1
 
 	if use emacs; then
-		cd "${S}/Macaulay2/emacs" || die
+		cd "${S}/Macaulay2/editors/emacs" || die
 		elisp-compile *.el
 	fi
 }
