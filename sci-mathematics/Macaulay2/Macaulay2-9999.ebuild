@@ -86,25 +86,11 @@ RDEPEND="${PYTHON_DEPS}
 #SITEFILE=70Macaulay2-gentoo.el
 
 S="${WORKDIR}/${PN}-${PV}/M2"
-SM2="${WORKDIR}/${PN}-${PV}/M2/"
 
 RESTRICT="mirror"
 
 src_unpack (){
-	# unpack "Normaliz2.8.zip"
 	git-r3_src_unpack
-	# Undo one level of directory until git allows to checkout
-	# subdirectories
-
-#	 mv "${S}"/M2/* "${S}" || die
-
-	# Need to get rid of this now because install wants this location later
-#	 rm -r "${S}/M2" || die
-
-	# Create a link to make all still work
-
-#	 ln -s "${S}"  "${S}"/M2 || die
-
 }
 
 pkg_setup () {
@@ -115,17 +101,6 @@ pkg_setup () {
 }
 
 src_prepare() {
-	# Put updated Normaliz.m2 in place
-	# cp "${WORKDIR}/Normaliz2.8/Macaulay2/Normaliz.m2" \
-		# "${S}/Macaulay2/packages" || die
-	# dos2unix "${S}/Macaulay2/packages/Normaliz.m2" || die
-
-	# Patching .m2 files to look for external programs in
-	# /usr/bin
-	#eapply "${FILESDIR}"/${PV}-paths-of-external-programs.patch
-
-	# Shortcircuit lapack tests
-	#eapply "${FILESDIR}"/${PV}-lapack.patch
 
 	eapply_user
 
@@ -155,12 +130,6 @@ src_prepare() {
 }
 
 src_configure (){
-	# Recommended in bug #268064 Possibly unecessary
-	# but should not hurt anybody.
-
-	#if ! use emacs; then
-	#	tags="ctags"
-	#fi
 
 	# configure instead of econf to enable install with --prefix
 	./configure LIBS="$($(tc-getPKG_CONFIG) --libs lapack)" \
@@ -178,6 +147,7 @@ src_configure (){
 src_compile() {
 	# Parallel build not supported yet
 	# emake -j1
+
 	# For trunk builds we may wish to ignore example errors
 	emake IgnoreExampleErrors=true -j1
 
@@ -199,17 +169,7 @@ src_install () {
 	emake IgnoreExampleErrors=true -j1 install
 
 
-	# It seems the default location is fine.
-
-	# Remove emacs files and install them in the
-	# correct place if use emacs
-
-	# rm -rf "${ED}"/usr/share/emacs/site-lisp || die
-	# if use emacs; then
-	# 	cd "${S}/Macaulay2/emacs" || die
-	# 	elisp-install ${PN} *.elc *.el
-	# 	elisp-site-file-install "${FILESDIR}/${SITEFILE}"
-	# fi
+	# It seems the default location for elisp files is fine.
 }
 
 pkg_postinst() {
