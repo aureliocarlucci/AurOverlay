@@ -52,7 +52,7 @@ DEPEND="${PYTHON_DEPS}
 
 RDEPEND="${PYTHON_DEPS}
 	dev-cpp/gtest
-	dev-cpp/tbbx
+	dev-cpp/tbb
 	dev-libs/gmp
 	dev-libs/libatomic_ops
 	dev-libs/libxml2
