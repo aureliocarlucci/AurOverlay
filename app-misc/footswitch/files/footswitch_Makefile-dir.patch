@@ -1,0 +1,12 @@
+diff --git a/Makefile b/Makefile
+index eca3ca0..d36b51d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,5 +1,5 @@
+-PREFIX = /usr/local
+-UDEVPREFIX = /etc/udev
++PREFIX = /usr
++UDEVPREFIX = /lib/udev
+ 
+ INSTALL = /usr/bin/install -c
+ INSTALLDATA = /usr/bin/install -c -m 644

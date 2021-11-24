@@ -15,6 +15,10 @@ inherit git-r3
 #EGIT_REPO_URI="https://github.com/rgerganov/footswitch.git"
 EGIT_REPO_URI="https://github.com/aureliocarlucci/footswitch.git"
 
+PATCHES=(
+	"${FILESDIR}/${P}-Makefile-dir.patch"
+)
+
 LICENSE="GPL-2"
 SLOT="0"
 #KEYWORDS="~amd64 ~x86"
