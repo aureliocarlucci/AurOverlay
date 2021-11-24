@@ -12,7 +12,8 @@ HOMEPAGE="https://github.com/rgerganov/footswitch"
 inherit git-r3
 #distutils-r1
 
-EGIT_REPO_URI="https://github.com/rgerganov/footswitch.git"
+#EGIT_REPO_URI="https://github.com/rgerganov/footswitch.git"
+EGIT_REPO_URI="https://github.com/aureliocarlucci/footswitch.git"
 
 LICENSE="GPL-2"
 SLOT="0"
