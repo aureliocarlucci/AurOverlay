@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="project">
+		<email>haskell@gentoo.org</email>
+		<name>Gentoo Haskell</name>
+	</maintainer>
+	<use>
+		<flag name="cpphs">Use cpphs instead of cpp.</flag>
+		<flag name="enable-cluster-counting">Enable the --count-clusters flag. (If enable-cluster-counting is
+False, then the --count-clusters flag triggers an error message.)</flag>
+		<flag name="optimise-heavily">Enable some expensive optimisations when compiling Agda.</flag>
+		<flag name="stdlib">Install the standard library.</flag>
+	</use>
+</pkgmetadata>
