@@ -25,7 +25,7 @@ SRC_URI="
 	${BASE_URI}/${GTEST}.tar.gz
 	${BASE_URI}/${MPSOLVE}.tar.gz"
 
-EGIT_REPO_URI="git://github.com/Macaulay2/M2.git"
+EGIT_REPO_URI="https://github.com/Macaulay2/M2.git"
 
 SLOT="0"
 LICENSE="GPL-2"
